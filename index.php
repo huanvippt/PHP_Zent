@@ -1,40 +1,6 @@
 <?php
-
-	//tạo thông tin database
-	$servername = "localhost";
-	$username = "root";
-	$password = "";
-	$dbname = "myphp";
-
-	//tạo kết nối
-	$conn = new mysqli($servername, $username, $password, $dbname);
-
-	//lấy dữ liệu từ bảng
-	$query = "select * from posts order by created_at desc limit 6";
-	$result = $conn->query($query);
-	$posts = array();
-	while ($row = $result->fetch_assoc()) {
-		$posts[] = $row;
-	}
-
-
-	//lấy dữ liệu từ bảng
-	$query_post = "select * from posts order by created_at asc limit 6";
-	$result_post = $conn->query($query_post);
-	$posts_post = array();
-	while ($row = $result_post->fetch_assoc()) {
-		$posts_post[] = $row;
-	}
-
-
-	//lấy ngẫu nhiên 1 hàng từ bảng
-	$query_rand = "select * from posts order by rand() limit 1";
-	$result_rand = $conn->query($query_rand);
-	$posts_rand = array();
-	while ($row = $result_rand->fetch_assoc()) {
-		$posts_rand[] = $row;
-	}
- ?>
+include 'cnDatabase.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -66,107 +32,11 @@
 
     </head>
 	<body>
-
 		<!-- Header -->
 		<header id="header">
 			<!-- Nav -->
-			<div id="nav">
-				<!-- Main Nav -->
-				<div id="nav-fixed">
-					<div class="container">
-						<!-- logo -->
-						<div class="nav-logo">
-							<a href="index.html" class="logo"><img src="./img/logo.png" alt=""></a>
-						</div>
-						<!-- /logo -->
-
-						<!-- nav -->
-						<ul class="nav-menu nav navbar-nav">
-							<li><a href="category.html">News</a></li>
-							<li><a href="category.html">Popular</a></li>
-							<li class="cat-1"><a href="category.html">Web Design</a></li>
-							<li class="cat-2"><a href="category.html">JavaScript</a></li>
-							<li class="cat-3"><a href="category.html">Css</a></li>
-							<li class="cat-4"><a href="category.html">Jquery</a></li>
-						</ul>
-						<!-- /nav -->
-
-						<!-- search & aside toggle -->
-						<div class="nav-btns">
-							<button class="aside-btn"><i class="fa fa-bars"></i></button>
-							<button class="search-btn"><i class="fa fa-search"></i></button>
-							<div class="search-form">
-								<input class="search-input" type="text" name="search" placeholder="Enter Your Search ...">
-								<button class="search-close"><i class="fa fa-times"></i></button>
-							</div>
-						</div>
-						<!-- /search & aside toggle -->
-					</div>
-				</div>
-				<!-- /Main Nav -->
-
-				<!-- Aside Nav -->
-				<div id="nav-aside">
-					<!-- nav -->
-					<div class="section-row">
-						<ul class="nav-aside-menu">
-							<li><a href="index.html">Home</a></li>
-							<li><a href="about.html">About Us</a></li>
-							<li><a href="#">Join Us</a></li>
-							<li><a href="#">Advertisement</a></li>
-							<li><a href="contact.html">Contacts</a></li>
-						</ul>
-					</div>
-					<!-- /nav -->
-
-					<!-- widget posts -->
-					<div class="section-row">
-						<h3>Recent Posts</h3>
-						<div class="post post-widget">
-							<a class="post-img" href="blog-post.html"><img src="./img/widget-2.jpg" alt=""></a>
-							<div class="post-body">
-								<h3 class="post-title"><a href="blog-post.html">Pagedraw UI Builder Turns Your Website Design Mockup Into Code Automatically</a></h3>
-							</div>
-						</div>
-
-						<div class="post post-widget">
-							<a class="post-img" href="blog-post.html"><img src="./img/widget-3.jpg" alt=""></a>
-							<div class="post-body">
-								<h3 class="post-title"><a href="blog-post.html">Why Node.js Is The Coolest Kid On The Backend Development Block!</a></h3>
-							</div>
-						</div>
-
-						<div class="post post-widget">
-							<a class="post-img" href="blog-post.html"><img src="./img/widget-4.jpg" alt=""></a>
-							<div class="post-body">
-								<h3 class="post-title"><a href="blog-post.html">Tell-A-Tool: Guide To Web Design And Development Tools</a></h3>
-							</div>
-						</div>
-					</div>
-					<!-- /widget posts -->
-
-					<!-- social links -->
-					<div class="section-row">
-						<h3>Follow us</h3>
-						<ul class="nav-aside-social">
-							<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-							<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-							<li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-						</ul>
-					</div>
-					<!-- /social links -->
-
-					<!-- aside nav close -->
-					<button class="nav-aside-close"><i class="fa fa-times"></i></button>
-					<!-- /aside nav close -->
-				</div>
-				<!-- Aside Nav -->
-			</div>
-			<!-- /Nav -->
+			<?php include 'mainNav.php' ?>
 		</header>
-		<!-- /Header -->
-
 		<!-- section -->
 		<div class="section">
 			<!-- container -->
@@ -174,37 +44,23 @@
 				<!-- row -->
 				<div class="row">	
 					<!-- post -->
+					<?php
+						foreach ($twoPosts as $twoPost) {
+					?>
 					<div class="col-md-6">
 						<div class="post post-thumb">
-							<a class="post-img" href="blog-post.html"><img src="./img/post-1.jpg" alt=""></a>
+							<a class="post-img" href="blog-post.php?id_p=<?=$twoPost['id']?>"><img src="./img/<?=$twoPost['thumbnail']?>" alt=""></a>
 							<div class="post-body">
 								<div class="post-meta">
-									<a class="post-category cat-2" href="category.html">JavaScript</a>
-									<span class="post-date">March 27, 2018</span>
+									<a class="post-category cat-2" href="category.php?id_p=<?=$twoPost['id']?>"><?=$twoPost['category']?></a>
+									<span class="post-date"><?=$twoPost['created_at']?></span>
 								</div>
-								<h3 class="post-title"><a href="blog-post.html">Chrome Extension Protects Against JavaScript-Based CPU Side-Channel Attacks</a></h3>
+								<h3 class="post-title"><a href="blog-post.php?id_p=<?=$twoPost['id']?>"><?=$twoPost['title']?></a></h3>
 							</div>
 						</div>
 					</div>
-					<!-- /post -->
-
-					<!-- post -->
-					<div class="col-md-6">
-						<div class="post post-thumb">
-							<a class="post-img" href="blog-post.html"><img src="./img/post-2.jpg" alt=""></a>
-							<div class="post-body">
-								<div class="post-meta">
-									<a class="post-category cat-3" href="category.html">Jquery</a>
-									<span class="post-date">March 27, 2018</span>
-								</div>
-								<h3 class="post-title"><a href="blog-post.html">Ask HN: Does Anybody Still Use JQuery?</a></h3>
-							</div>
-						</div>
-					</div>
-					<!-- /post -->
+				<?php } ?>
 				</div>
-				<!-- /row -->
-
 				<!-- row -->
 				<div class="row">
 					<div class="col-md-12">
@@ -212,111 +68,102 @@
 							<h2>Bài viết mới nhất</h2>
 						</div>
 					</div>
-
+					<!-- post -->
 					<?php
-						foreach ($posts as $post) {
+						foreach ($newPosts as $nPost) {
 					?>
-						<!-- post -->
 						<div class="col-md-4">
 							<div class="post">
-								<a class="post-img" href="blog-post.html"><img src="<?php echo $post['thumbnail']; ?>" alt="" width = 360px height = 216px></a>
+								<a class="post-img" href="blog-post.php?id_p=<?=$nPost['id']?>"><img src="./img/<?=$nPost['thumbnail']; ?>" alt="" width = 360px height = 216px></a>
 								<div class="post-body">
 									<div class="post-meta">
-										<a class="post-category cat-1" href="category.html">Web Design</a>
-										<span class="post-date"><?php echo $post['created_at']; ?></span>
+										<a class="post-category cat-1" href="category.php?id_p=<?=$nPost['id']?>"><?=$nPost['category']; ?></a>
+										<span class="post-date"><?=$nPost['created_at']; ?></span>
 									</div>
-									<h3 class="post-title"><a href="blog-post.html"><?php echo $post['title']; ?></a></h3>
+									<h3 class="post-title"><a href="blog-post.php?id_p=<?=$nPost['id']?>"><?=$nPost['title']; ?></a></h3>
 								</div>
 							</div>
 						</div>
 					<?php } ?>
-					<!-- /post -->
 					<div class="clearfix visible-md visible-lg"></div>	
 				</div>
-				<!-- /row -->
-
 				<!-- row -->
 				<div class="row">
 					<div class="col-md-8">
 						<div class="row">
 							<!-- post -->
 							<?php
-								foreach ($posts_rand as $post_rand) {
+								foreach ($postsRand as $postRand) {
 							?>
 							<div class="col-md-12">
 								<div class="post post-thumb">
-									<a class="post-img" href="blog-post.html"><img src="<?php echo $post_rand['thumbnail']; ?>" alt=""></a>
+									<a class="post-img" href="blog-post.php?id_p=<?=$postRand['id']?>"><img src="./img/<?=$postRand['thumbnail']; ?>" alt=""></a>
 									<div class="post-body">
 										<div class="post-meta">
-											<a class="post-category cat-3" href="category.html">Jquery</a>
-											<span class="post-date"><?php echo $post_rand['created_at']; ?></span>
+											<a class="post-category cat-3" href="category.php?id_p=<?=$postRand['id']?>"><?=$postRand['category']; ?></a>
+											<span class="post-date"><?=$postRand['created_at']; ?></span>
 										</div>
-										<h3 class="post-title"><a href="blog-post.html"><?php echo $post_rand['title']; ?></a></h3>
+										<h3 class="post-title"><a href="blog-post.php?id_p=<?=$postRand['id']?>"><?=$postRand['title']?></a></h3>
 									</div>
 								</div>
 							</div>
 							<?php } ?>
-							<!-- /post -->
-
 							<!-- post -->
-
 							<?php
-								foreach ($posts_post as $post_post) {
+								$dem = 1;
+								foreach ($newPosts1 as $newPost1) {
 							?>
 							<div class="col-md-6">
 								<div class="post">
-									<a class="post-img" href="blog-post.html"><img src="<?php echo $post_post['thumbnail']; ?>" alt="" width = 360px height = 216px></a>
+									<a class="post-img" href="blog-post.php?id_p=<?=$newPost1['id']?>"><img src="./img/<?=$newPost1['thumbnail']; ?>" alt="" width = 360px height = 216px></a>
 									<div class="post-body">
 										<div class="post-meta">
-											<a class="post-category cat-4" href="category.html">Css</a>
-											<span class="post-date"><?php echo $post_post['created_at']; ?></span>
+											<a class="post-category cat-4" href="category.php?id_p=<?=$newPost1['id']?>"><?=$newPost1['category']; ?></a>
+											<span class="post-date"><?=$newPost1['created_at']; ?></span>
 										</div>
-										<h3 class="post-title"><a href="blog-post.html"><?php echo $post_post['title']; ?></a></h3>
+										<h3 class="post-title"><a href="blog-post.php?id_p=<?=$newPost1['id']?>"><?=$newPost1['title']; ?></a></h3>
 									</div>
 								</div>
 							</div>
-							<?php } ?>
-							<!-- /post -->
-
-							
-
-							<div class="clearfix visible-md visible-lg"></div>
-
+							<?php
+								if($dem % 2 == 0){
+									echo '<div class="clearfix visible-md visible-lg"></div>';
+								}
+								$dem++;
+							 } ?>
 						</div>
 					</div>
-
 					<div class="col-md-4">
 						<!-- post widget -->
 						<div class="aside-widget">
 							<div class="section-title">
 								<h2>Most Read</h2>
 							</div>
-
 							<div class="post post-widget">
-								<a class="post-img" href="blog-post.html"><img src="./img/widget-1.jpg" alt=""></a>
+								<a class="post-img" href="blog-post.php"><img src="./img/widget-1.jpg" alt=""></a>
 								<div class="post-body">
-									<h3 class="post-title"><a href="blog-post.html">Tell-A-Tool: Guide To Web Design And Development Tools</a></h3>
+									<h3 class="post-title"><a href="blog-post.php">Tell-A-Tool: Guide To Web Design And Development Tools</a></h3>
 								</div>
 							</div>
 
 							<div class="post post-widget">
-								<a class="post-img" href="blog-post.html"><img src="./img/widget-2.jpg" alt=""></a>
+								<a class="post-img" href="blog-post.php"><img src="./img/widget-2.jpg" alt=""></a>
 								<div class="post-body">
-									<h3 class="post-title"><a href="blog-post.html">Pagedraw UI Builder Turns Your Website Design Mockup Into Code Automatically</a></h3>
+									<h3 class="post-title"><a href="blog-post.php">Pagedraw UI Builder Turns Your Website Design Mockup Into Code Automatically</a></h3>
 								</div>
 							</div>
 
 							<div class="post post-widget">
-								<a class="post-img" href="blog-post.html"><img src="./img/widget-3.jpg" alt=""></a>
+								<a class="post-img" href="blog-post.php"><img src="./img/widget-3.jpg" alt=""></a>
 								<div class="post-body">
-									<h3 class="post-title"><a href="blog-post.html">Why Node.js Is The Coolest Kid On The Backend Development Block!</a></h3>
+									<h3 class="post-title"><a href="blog-post.php">Why Node.js Is The Coolest Kid On The Backend Development Block!</a></h3>
 								</div>
 							</div>
 
 							<div class="post post-widget">
-								<a class="post-img" href="blog-post.html"><img src="./img/widget-4.jpg" alt=""></a>
+								<a class="post-img" href="blog-post.php"><img src="./img/widget-4.jpg" alt=""></a>
 								<div class="post-body">
-									<h3 class="post-title"><a href="blog-post.html">Tell-A-Tool: Guide To Web Design And Development Tools</a></h3>
+									<h3 class="post-title"><a href="blog-post.php">Tell-A-Tool: Guide To Web Design And Development Tools</a></h3>
 								</div>
 							</div>
 						</div>
@@ -328,24 +175,24 @@
 								<h2>Featured Posts</h2>
 							</div>
 							<div class="post post-thumb">
-								<a class="post-img" href="blog-post.html"><img src="./img/post-2.jpg" alt=""></a>
+								<a class="post-img" href="blog-post.php"><img src="./img/post-2.jpg" alt=""></a>
 								<div class="post-body">
 									<div class="post-meta">
 										<a class="post-category cat-3" href="category.html">Jquery</a>
 										<span class="post-date">March 27, 2018</span>
 									</div>
-									<h3 class="post-title"><a href="blog-post.html">Ask HN: Does Anybody Still Use JQuery?</a></h3>
+									<h3 class="post-title"><a href="blog-post.php">Ask HN: Does Anybody Still Use JQuery?</a></h3>
 								</div>
 							</div>
 
 							<div class="post post-thumb">
-								<a class="post-img" href="blog-post.html"><img src="./img/post-1.jpg" alt=""></a>
+								<a class="post-img" href="blog-post.php"><img src="./img/post-1.jpg" alt=""></a>
 								<div class="post-body">
 									<div class="post-meta">
 										<a class="post-category cat-2" href="category.html">JavaScript</a>
 										<span class="post-date">March 27, 2018</span>
 									</div>
-									<h3 class="post-title"><a href="blog-post.html">Chrome Extension Protects Against JavaScript-Based CPU Side-Channel Attacks</a></h3>
+									<h3 class="post-title"><a href="blog-post.php">Chrome Extension Protects Against JavaScript-Based CPU Side-Channel Attacks</a></h3>
 								</div>
 							</div>
 						</div>
@@ -381,13 +228,13 @@
 					<!-- post -->
 					<div class="col-md-4">
 						<div class="post">
-							<a class="post-img" href="blog-post.html"><img src="./img/post-4.jpg" alt=""></a>
+							<a class="post-img" href="blog-post.php"><img src="./img/post-4.jpg" alt=""></a>
 							<div class="post-body">
 								<div class="post-meta">
 									<a class="post-category cat-2" href="category.html">JavaScript</a>
 									<span class="post-date">March 27, 2018</span>
 								</div>
-								<h3 class="post-title"><a href="blog-post.html">Chrome Extension Protects Against JavaScript-Based CPU Side-Channel Attacks</a></h3>
+								<h3 class="post-title"><a href="blog-post.php">Chrome Extension Protects Against JavaScript-Based CPU Side-Channel Attacks</a></h3>
 							</div>
 						</div>
 					</div>
@@ -396,13 +243,13 @@
 					<!-- post -->
 					<div class="col-md-4">
 						<div class="post">
-							<a class="post-img" href="blog-post.html"><img src="./img/post-5.jpg" alt=""></a>
+							<a class="post-img" href="blog-post.php"><img src="./img/post-5.jpg" alt=""></a>
 							<div class="post-body">
 								<div class="post-meta">
 									<a class="post-category cat-3" href="category.html">Jquery</a>
 									<span class="post-date">March 27, 2018</span>
 								</div>
-								<h3 class="post-title"><a href="blog-post.html">Ask HN: Does Anybody Still Use JQuery?</a></h3>
+								<h3 class="post-title"><a href="blog-post.php">Ask HN: Does Anybody Still Use JQuery?</a></h3>
 							</div>
 						</div>
 					</div>
@@ -411,13 +258,13 @@
 					<!-- post -->
 					<div class="col-md-4">
 						<div class="post">
-							<a class="post-img" href="blog-post.html"><img src="./img/post-3.jpg" alt=""></a>
+							<a class="post-img" href="blog-post.php"><img src="./img/post-3.jpg" alt=""></a>
 							<div class="post-body">
 								<div class="post-meta">
 									<a class="post-category cat-1" href="category.html">Web Design</a>
 									<span class="post-date">March 27, 2018</span>
 								</div>
-								<h3 class="post-title"><a href="blog-post.html">Pagedraw UI Builder Turns Your Website Design Mockup Into Code Automatically</a></h3>
+								<h3 class="post-title"><a href="blog-post.php">Pagedraw UI Builder Turns Your Website Design Mockup Into Code Automatically</a></h3>
 							</div>
 						</div>
 					</div>
@@ -445,13 +292,13 @@
 							<!-- post -->
 							<div class="col-md-12">
 								<div class="post post-row">
-									<a class="post-img" href="blog-post.html"><img src="./img/post-4.jpg" alt=""></a>
+									<a class="post-img" href="blog-post.php"><img src="./img/post-4.jpg" alt=""></a>
 									<div class="post-body">
 										<div class="post-meta">
 											<a class="post-category cat-2" href="category.html">JavaScript</a>
 											<span class="post-date">March 27, 2018</span>
 										</div>
-										<h3 class="post-title"><a href="blog-post.html">Chrome Extension Protects Against JavaScript-Based CPU Side-Channel Attacks</a></h3>
+										<h3 class="post-title"><a href="blog-post.php">Chrome Extension Protects Against JavaScript-Based CPU Side-Channel Attacks</a></h3>
 										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...</p>
 									</div>
 								</div>
@@ -461,13 +308,13 @@
 							<!-- post -->
 							<div class="col-md-12">
 								<div class="post post-row">
-									<a class="post-img" href="blog-post.html"><img src="./img/post-6.jpg" alt=""></a>
+									<a class="post-img" href="blog-post.php"><img src="./img/post-6.jpg" alt=""></a>
 									<div class="post-body">
 										<div class="post-meta">
 											<a class="post-category cat-2" href="category.html">JavaScript</a>
 											<span class="post-date">March 27, 2018</span>
 										</div>
-										<h3 class="post-title"><a href="blog-post.html">Why Node.js Is The Coolest Kid On The Backend Development Block!</a></h3>
+										<h3 class="post-title"><a href="blog-post.php">Why Node.js Is The Coolest Kid On The Backend Development Block!</a></h3>
 										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...</p>
 									</div>
 								</div>
@@ -477,13 +324,13 @@
 							<!-- post -->
 							<div class="col-md-12">
 								<div class="post post-row">
-									<a class="post-img" href="blog-post.html"><img src="./img/post-1.jpg" alt=""></a>
+									<a class="post-img" href="blog-post.php"><img src="./img/post-1.jpg" alt=""></a>
 									<div class="post-body">
 										<div class="post-meta">
 											<a class="post-category cat-4" href="category.html">Css</a>
 											<span class="post-date">March 27, 2018</span>
 										</div>
-										<h3 class="post-title"><a href="blog-post.html">CSS Float: A Tutorial</a></h3>
+										<h3 class="post-title"><a href="blog-post.php">CSS Float: A Tutorial</a></h3>
 										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...</p>
 									</div>
 								</div>
@@ -493,13 +340,13 @@
 							<!-- post -->
 							<div class="col-md-12">
 								<div class="post post-row">
-									<a class="post-img" href="blog-post.html"><img src="./img/post-2.jpg" alt=""></a>
+									<a class="post-img" href="blog-post.php"><img src="./img/post-2.jpg" alt=""></a>
 									<div class="post-body">
 										<div class="post-meta">
 											<a class="post-category cat-3" href="category.html">Jquery</a>
 											<span class="post-date">March 27, 2018</span>
 										</div>
-										<h3 class="post-title"><a href="blog-post.html">Ask HN: Does Anybody Still Use JQuery?</a></h3>
+										<h3 class="post-title"><a href="blog-post.php">Ask HN: Does Anybody Still Use JQuery?</a></h3>
 										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...</p>
 									</div>
 								</div>
@@ -563,81 +410,8 @@
 			<!-- /container -->
 		</div>
 		<!-- /section -->
-
 		<!-- Footer -->
-		<footer id="footer">
-			<!-- container -->
-			<div class="container">
-				<!-- row -->
-				<div class="row">
-					<div class="col-md-5">
-						<div class="footer-widget">
-							<div class="footer-logo">
-								<a href="index.html" class="logo"><img src="./img/logo.png" alt=""></a>
-							</div>
-							<ul class="footer-nav">
-								<li><a href="#">Privacy Policy</a></li>
-								<li><a href="#">Advertisement</a></li>
-							</ul>
-							<div class="footer-copyright">
-								<span>&copy; <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></span>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-md-4">
-						<div class="row">
-							<div class="col-md-6">
-								<div class="footer-widget">
-									<h3 class="footer-title">About Us</h3>
-									<ul class="footer-links">
-										<li><a href="about.html">About Us</a></li>
-										<li><a href="#">Join Us</a></li>
-										<li><a href="contact.html">Contacts</a></li>
-									</ul>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="footer-widget">
-									<h3 class="footer-title">Catagories</h3>
-									<ul class="footer-links">
-										<li><a href="category.html">Web Design</a></li>
-										<li><a href="category.html">JavaScript</a></li>
-										<li><a href="category.html">Css</a></li>
-										<li><a href="category.html">Jquery</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-md-3">
-						<div class="footer-widget">
-							<h3 class="footer-title">Join our Newsletter</h3>
-							<div class="footer-newsletter">
-								<form>
-									<input class="input" type="email" name="newsletter" placeholder="Enter your email">
-									<button class="newsletter-btn"><i class="fa fa-paper-plane"></i></button>
-								</form>
-							</div>
-							<ul class="footer-social">
-								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-								<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-								<li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-							</ul>
-						</div>
-					</div>
-
-				</div>
-				<!-- /row -->
-			</div>
-			<!-- /container -->
-		</footer>
-		<!-- /Footer -->
-
+		<?php include 'footer.php';?>
 		<!-- jQuery Plugins -->
 		<script src="js/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
